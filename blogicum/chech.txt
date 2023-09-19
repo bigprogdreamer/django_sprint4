@@ -1,0 +1,17 @@
+BEGIN;
+--
+-- Create model Category
+--
+CREATE TABLE "blog_category" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "title" varchar(256) NOT NULL, "description" varchar(50) NOT NULL UNIQUE, "is_published" bool NOT NULL, "created_at" datetime NOT NULL);
+--
+-- Create model Location
+--
+CREATE TABLE "blog_location" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "name" varchar(256) NOT NULL, "is_published" bool NOT NULL, "created_at" datetime NOT NULL);
+--
+-- Create model Post
+--
+CREATE TABLE "blog_post" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "title" varchar(256) NOT NULL, "text" text NOT NULL, "pub_date" datetime NOT NULL, "is_published" bool NOT NULL, "created_at" datetime NOT NULL, "author_id" integer NOT NULL REFERENCES "auth_user" ("id") DEFERRABLE INITIALLY DEFERRED, "category_id" bigint NULL REFERENCES "blog_category" ("id") DEFERRABLE INITIALLY DEFERRED, "location_id" bigint NULL REFERENCES "blog_location" ("id") DEFERRABLE INITIALLY DEFERRED);
+CREATE INDEX "blog_post_author_id_dd7a8485" ON "blog_post" ("author_id");
+CREATE INDEX "blog_post_category_id_c326dbf8" ON "blog_post" ("category_id");
+CREATE INDEX "blog_post_location_id_040b0a05" ON "blog_post" ("location_id");
+COMMIT;
